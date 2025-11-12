@@ -1,117 +1,5 @@
 ## Feedback System — Documentation
 
-### Overview
-A full-stack feedback collection system. The frontend (React + MUI) lets users submit feedback and provides a simple admin view to browse submissions. The backend (Node.js + Express + Mongoose) exposes REST endpoints and persists data in MongoDB.
-
-
-## API Documentation
-Base URL: `http://localhost:4000`
-
-- **Health Check**
-  - Method: GET
-  - Path: `/health`
-  - Response:
-
-```json
-{ "ok": true }
-```
-
-- **Create Feedback**
-  - Method: POST
-  - Path: `/feedback`
-  - Body (JSON):
-
-```json
-{
-  "name": "Jane Doe",
-  "email": "jane@example.com",
-  "phone": "9876543210",
-  "rating": 5,
-  "feedback": "Great experience!"
-}
-```
-
-  - Success Response: 201
-
-```json
-{
-  "data": {
-    "_id": "6731f8b0f1...",
-    "name": "Jane Doe",
-    "email": "jane@example.com",
-    "phone": "9876543210",
-    "rating": 5,
-    "feedback": "Great experience!",
-    "createdAt": "2025-11-11T10:00:00.000Z",
-    "updatedAt": "2025-11-11T10:00:00.000Z",
-    "__v": 0
-  }
-}
-```
-
-  - Error Responses:
-    - 400: `{ "message": "All fields are required" }`
-    - 500: `{ "message": "Internal server error" }`
-
-  - cURL:
-
-```bash
-curl -X POST http://localhost:4000/feedback \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name":"Jane Doe",
-    "email":"jane@example.com",
-    "phone":"9876543210",
-    "rating":5,
-    "feedback":"Great experience!"
-  }'
-```
-
-- **List Feedback (Paginated)**
-  - Method: GET
-  - Path: `/feedback`
-  - Query Params:
-    - `page` (number, optional, default 0, min 0)
-    - `limit` (number, optional, default 10, min 1, max 100)
-  - Example: `GET /feedback?page=0&limit=10`
-  - Success Response: 200
-
-```json
-{
-  "data": [
-    {
-      "_id": "6731f8b0f1...",
-      "name": "Jane Doe",
-      "email": "jane@example.com",
-      "phone": "9876543210",
-      "rating": 5,
-      "feedback": "Great experience!",
-      "createdAt": "2025-11-11T10:00:00.000Z",
-      "updatedAt": "2025-11-11T10:00:00.000Z",
-      "__v": 0
-    }
-  ],
-  "total": 1,
-  "page": 0,
-  "limit": 10
-}
-```
-
-  - Error Responses:
-    - 500: `{ "message": "Internal server error" }`
-
-  - cURL:
-
-```bash
-curl "http://localhost:4000/feedback?page=0&limit=10"
-```
-
-
-### Postman Usage
-- Create a collection with the two requests above.
-- Set an environment variable `baseUrl` to `http://localhost:4000` and reference it as `{{baseUrl}}/feedback` and `{{baseUrl}}/health`.
-
-
 ## Database Schema
 MongoDB with Mongoose. Single collection: `feedback`.
 
@@ -197,10 +85,9 @@ Indexes: default `_id` index; `timestamps` enabled.
 ### Backend
 1. `cd project/server`
 2. `npm install`
-3. Create `.env` (optional):
+3. `npm run dev`
 
-```env
-PORT=4000
+```PORT=4000
 MONGODB_URI=mongodb://127.0.0.1:27017/feedback_app
 ```
 
@@ -210,7 +97,5 @@ MONGODB_URI=mongodb://127.0.0.1:27017/feedback_app
 1. `cd project`
 2. `npm install`
 3. `npm run dev`
-
-Open the app in the browser and ensure the backend is running at `http://localhost:4000`.
 
 
